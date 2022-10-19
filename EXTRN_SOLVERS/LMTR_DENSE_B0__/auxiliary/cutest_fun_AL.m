@@ -1,0 +1,52 @@
+function [varargout] = cutest_fun_AL( x, varargin )
+%------------ unconstrained augmented Lagrangian objective ---------------%
+%
+% cutest_fun_AL.m is a function to compute the Augmented Lagrangian to 
+% interface with the LMTR_DENSE_B0 solver.
+%
+% L = f(x) + 0.5MU_AL* c(x)^T*c(x),
+%
+% where f is the CUTEst objective (known Hessian) and c(x)^T*c(x) has
+% an unknown Hessian. This function cutest_fun.m and includes a global
+% variable MU_AL. Function description from 'cutest_fun.m':
+
+% Evaluate objective function
+% Usage:       f = obj(x)      evaluates function value only
+%          [f,g] = obj(x)  evaluates function value and gradient
+%        [f,g,H] = obj(x)  evaluates function value, gradient and Hessian
+%-------------------------------------------------------------------------%
+
+  if nargout > 3
+      error( 'obj: too many output arguments' );
+  end
+
+  % Global variable, penalty parameter.
+  global MU_AL;
+  
+  % Evaluate constraint. Needed for augmented lagrangian objective,
+  % and gradient.
+  c   = cutest_cons(x);  
+  
+  if nargin == 1
+      
+      % Compute objective function value
+      ff  = cutest_obj(x);      
+      
+      if nargout > 1 
+         
+        % Gradient is requested         
+        varargout{1}   = ff + 0.5*MU_AL*(c'*c);
+        
+        [~,gk]      = cutest_obj(x);                            
+        varargout{2}   = gk + MU_AL.*cutest_jtprod(x,c); 
+                 
+      else
+        varargout{1}    =  ff + 0.5*MU_AL*(c'*c);
+      end
+  else  
+      % Only gradient is requested
+      
+      [~,gk]        = cutest_obj(x);            
+      varargout{1}  = gk + MU_AL.*cutest_jtprod(x,c); 
+      
+  end

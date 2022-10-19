@@ -1,0 +1,25 @@
+% Current experiments script
+
+%EXPERIMENT_I_i;
+
+%EXPERIMENT_I_ii;
+
+%EXPERIMENT_IV_i;
+
+%EXPERIMENT_V_i;
+
+%EXPERIMENT_VI_i;
+
+%EXPERIMENT_II_i;
+
+%EXPERIMENT_III_i_a;
+
+%EXPERIMENT_III_i_b;
+
+EXPERIMENT_III_i;
+
+EXPERIMENT_IV_ii;
+
+EXPERIMENT_V_ii;
+
+EXPERIMENT_VI_ii;

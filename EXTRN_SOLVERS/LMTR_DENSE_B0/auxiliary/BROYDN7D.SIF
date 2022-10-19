@@ -1,0 +1,162 @@
+***************************
+* SET UP THE INITIAL DATA *
+***************************
+
+NAME          BROYDN7D
+
+*   Problem :
+*   *********
+
+*   A seven diagonal variant of the Broyden tridiagonal system,
+*   featuring a band far away from the diagonal.
+
+*   Source:
+*   Ph.L. Toint,
+*   "Some numerical results using a sparse matrix updating formula in
+*   unconstrained optimization",
+*   Mathematics of Computation, vol. 32(114), pp. 839-852, 1978.
+
+*   See also Buckley#84
+*   SIF input: Ph. Toint, Dec 1989.
+
+*   classification OUR2-AN-V-0
+
+*   N/2 is half the number of variables
+
+*IE N/2                 5              $-PARAMETER  n=10 original value
+*IE N/2                 25             $-PARAMETER  n=50
+*IE N/2                 50             $-PARAMETER  n=100
+*IE N/2                 250            $-PARAMETER  n=500
+*IE N/2                 500            $-PARAMETER  n=1000
+ IE N/2                 2500           $-PARAMETER  n=5000
+*IE N/2                 5000           $-PARAMETER  n=10000
+
+*   Number of variables
+
+ IM N         N/2       2
+
+*   Other parameters
+
+ IE 1                   1
+ IE 2                   2
+ IA N-1       N         -1
+
+VARIABLES
+
+ DO I         1                        N
+ X  X(I)
+ ND
+
+GROUPS
+
+ N  E1        X2        - 2.0
+
+ DO I         2                        N-1
+ IA I-1       I         -1
+ IA I+1       I         1
+ XN E(I)      X(I-1)    -1.0           X(I+1)    - 2.0
+ ND
+
+ XN E(N)      X(N-1)    -1.0
+
+ DO I         1                        N/2
+ I+ IPN2      I                        N/2
+ XN S(I)      X(I)      1.0            X(IPN2)   1.0
+ ND
+
+CONSTANTS
+
+ DO I         1                        N
+ X  BROYDN7D  E(I)      -1.0
+ ND
+
+BOUNDS
+
+ FR BROYDN7D  'DEFAULT'
+
+START POINT
+
+ XV BROYDN7D  'DEFAULT'  1.0
+
+ELEMENT TYPE
+
+ EV BROY      V1
+
+ELEMENT USES
+
+ XT 'DEFAULT' BROY
+
+ DO I         1                        N
+ ZV B(I)      V1                       X(I)
+ ND
+
+GROUP TYPE
+
+ GV L7/3      GVAR
+
+GROUP USES
+
+ XT 'DEFAULT' L7/3
+
+ DO I         1                        N
+ XE E(I)      B(I)
+ ND
+
+OBJECT BOUND
+
+ LO BROYDN7D            0.0
+
+*   Solution
+
+*LO SOLTN               1.2701
+
+ENDATA
+
+***********************
+* SET UP THE FUNCTION *
+* AND RANGE ROUTINES  *
+***********************
+
+ELEMENTS      BROYDN7D
+
+TEMPORARIES
+
+ R  TEMP1
+ R  TEMP2
+
+INDIVIDUALS
+
+ T  BROY
+ A  TEMP1               - 2.0 * V1
+ A  TEMP2               3.0 + TEMP1
+ F                      TEMP2 * V1
+ G  V1                  TEMP2 + TEMP1
+ H  V1        V1        - 4.0
+
+ENDATA
+
+*********************
+* SET UP THE GROUPS *
+* ROUTINE           *
+*********************
+
+GROUPS        BROYDN7D
+
+TEMPORARIES
+
+ R  Z
+
+ M  ABS
+ M  SIGN
+
+INDIVIDUALS
+
+ T  L7/3
+
+ A  Z                   ABS( GVAR )
+
+ F                      Z**(7.0/3.0)
+ G                      7.0 * SIGN( Z**(4.0/3.0), GVAR ) / 3.0
+ H                      28.0 * Z**(1.0/3.0) / 9.0
+
+ENDATA

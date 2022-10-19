@@ -1,0 +1,21 @@
+% Updated outline of experiments, 01/07/2017, J.B
+
+1.
+    i. Unconstrained minimizer p_u, and c=1,2,4, and lambda = 1/4,2/4,3/4,
+    ii. Unconstrained minimizer \hat{p}_u, and c=1,2,4,8,10,100 and lambda = 1/4,2/4,3/4,
+    iii. Compare best of 1.i and 1.ii.
+
+2. Comparison (best of 1.iii) to LMTR,
+3. Comparison (best of 1.iii) to LBFGS-B,
+4. Comparison (best of 1.iii) to LBFGS-TR,
+
+
+% Outline experiments, 06/27/17, J.B
+
+1. Dense B_0, unconstrained minimizer \hat{p} with scalings, c=1,2,4,
+2. Dense B_0, comparison of unconstrained minimizers \hat{p} and p,
+3. SVD (compared to best of 1. and 2.),
+4. Comparison (best of 1.,2.,3.) to LMTR,
+5. Comparison (best of 1.,2.,3.,4.) to LBFGS-B,
+6. Comparison (best of 1.,2.,3.,4.,5) to LBFGS-TR,
+7. Alternative dense parameter gamma_perp = \lambda \gamma* + (1-\lambda)\gamma
